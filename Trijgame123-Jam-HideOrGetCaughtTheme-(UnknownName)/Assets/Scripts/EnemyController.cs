@@ -1,23 +1,18 @@
 ﻿using UnityEngine;
-using Unity.Collections;
 using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    NavMeshAgent _agentMovement;
-    NavMeshPath _navMeshPath;
-
     public bool _canSeePlayer;
-    bool _pathFindBool;
+    bool _canMovePatrol;
 
     public Transform[] wayPoints;
-    int destinationPoints;
+
+    NavMeshAgent _navMeshAgent;
 
     private void Start()
     {
-        _agentMovement = GetComponent<NavMeshAgent>();
-        _navMeshPath = new NavMeshPath();
-        destinationPoints = 0;
+        _navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -30,8 +25,7 @@ public class EnemyController : MonoBehaviour
         {
             if (_rayCastHit.collider.gameObject.CompareTag("Player"))
             {
-                Debug.Log("hit player");
-                _agentMovement.destination = _rayCastHit.collider.gameObject.transform.position;
+                _navMeshAgent.destination = _rayCastHit.collider.gameObject.transform.position;
                 _canSeePlayer = true;
             }
         }
@@ -42,19 +36,22 @@ public class EnemyController : MonoBehaviour
 
         if (_canSeePlayer == false)
         {
-            if (!_agentMovement.pathPending/* && _agentMovement.remainingDistance < 0.5f*/)
-                PathDestination();
-            Debug.Log("cant see");
+            if(_canMovePatrol == false)
+            {
+                _navMeshAgent.SetDestination(wayPoints[0].position);
+            }
+            if (Vector3.Distance(transform.position, wayPoints[0].position) <= 1f)
+            {
+                _canMovePatrol = true;
+            }
+            if (_canMovePatrol == true)
+            {
+                _navMeshAgent.SetDestination(wayPoints[1].position);
+            }
+            if (Vector3.Distance(transform.position, wayPoints[1].position) <= 1f)
+            {
+                _canMovePatrol = false;
+            }
         }
-    }
-
-    // 
-    void PathDestination()
-    {
-        if (wayPoints.Length == 0)
-            return;
-
-        _agentMovement.destination = wayPoints[destinationPoints].position;
-        destinationPoints = (destinationPoints + 1) % wayPoints.Length;
     }
 }
