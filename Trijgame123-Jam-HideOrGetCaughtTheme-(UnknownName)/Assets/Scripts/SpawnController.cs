@@ -2,12 +2,15 @@
 
 public class SpawnController : MonoBehaviour
 {
+    public GameObject nextLvlButton;
+
     // ontriggerenter
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            // TODO : setactive UI text to next level
+            nextLvlButton.SetActive(true);
+            Time.timeScale = 0.1f;
         }
     }
 }
