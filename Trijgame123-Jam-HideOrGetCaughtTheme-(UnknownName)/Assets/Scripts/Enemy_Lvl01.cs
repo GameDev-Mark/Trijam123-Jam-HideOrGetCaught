@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class Enemy_Lvl01 : MonoBehaviour
 {
     public bool _canSeePlayer;
     bool _canMovePatrol;
@@ -26,7 +26,8 @@ public class EnemyController : MonoBehaviour
             if (_rayCastHit.collider.gameObject.CompareTag("Player"))
             {
                 _navMeshAgent.destination = _rayCastHit.collider.gameObject.transform.position;
-                _canSeePlayer = true;
+                _canSeePlayer = true;   
+                Time.timeScale = 0.1f;
             }
         }
         else

@@ -12,15 +12,18 @@ public class EnemySensor : MonoBehaviour
     float timerCheckColl_min;
     float timerCheckColl_count;
 
+    Color _whiteLightC = Color.white;
+    Color _redLightC = Color.red;
+
     void Start()
     {
         parentTransform = GetComponentInParent<Transform>().parent;
         changeLightColor = GetComponent<Light>();
 
         _canSeeWalls = false;
-        timerCheckColl_max = 1f;
+        timerCheckColl_max = 1.5f;
         timerCheckColl_min = 0f;
-        timerCheckColl_count = 1f;
+        timerCheckColl_count = 1.5f;
     }
 
     private void Update()
@@ -33,16 +36,25 @@ public class EnemySensor : MonoBehaviour
                 _canSeeWalls = false;
                 GetComponent<BoxCollider>().enabled = enabled;
                 timerCheckColl_count = timerCheckColl_max;
+                changeLightColor.color = _whiteLightC; // white color
             }
+        }
+
+        if (Time.timeScale <= 0.1f)
+        {
+            changeLightColor.color = new Color(225, 0, 0, 225); // red color
         }
     }
 
     void OnTriggerStay(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Player"))
+        if(_canSeeWalls == false)
         {
-            parentTransform.LookAt(collider.transform);
-            changeLightColor.color = new Color(225, 0, 0, 225); // red color
+            if (collider.gameObject.CompareTag("Player"))
+            {
+                parentTransform.LookAt(collider.transform);
+                changeLightColor.color = _redLightC; // red color
+            }
         }
 
         if(collider.gameObject.CompareTag("Walls"))
@@ -50,15 +62,6 @@ public class EnemySensor : MonoBehaviour
             GetComponent<BoxCollider>().enabled = !enabled;
             _canSeeWalls = true;
             Debug.Log("WALLS UP");
-        }
-    }
-
-    void OnTriggerExit(Collider collider)
-    {
-        if (collider.gameObject.CompareTag("Player"))
-        {
-            changeLightColor.color = new Color(225, 225, 225, 225); // white color
-            Debug.Log("white");
         }
     }
 }
