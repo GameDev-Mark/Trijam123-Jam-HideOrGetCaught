@@ -16,7 +16,7 @@ public class Enemy_Lvl01 : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         RaycastHit _rayCastHit;
         Ray _ray = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
