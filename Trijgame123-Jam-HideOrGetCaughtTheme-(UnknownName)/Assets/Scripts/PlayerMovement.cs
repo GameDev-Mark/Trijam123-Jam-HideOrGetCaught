@@ -1,23 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    float moveSpeed;
-    float sideMoveSpeed;
-    Rigidbody rb;
+    float moveSpeed; // forward and backwards move speed
+    float sideMoveSpeed; // sideways move speed
+    Rigidbody rb; // rigidbody player
+    Vector3 trackingSpeed; // tracking speed of players movement
 
-    // Start is called before the first frame update
+    // unitys start function
     void Start()
     {
         moveSpeed = 3f;
         sideMoveSpeed = 3f;
-
         rb = GetComponent<Rigidbody>();
+        trackingSpeed = new Vector3(0.5f, 0.5f, 0.5f);
     }
 
-    // Update is called once per frame
+    // unitys fixedUpdate function
     void FixedUpdate()
     {
         float _FBmove = Input.GetAxis("Vertical") * moveSpeed;
@@ -27,5 +26,19 @@ public class PlayerMovement : MonoBehaviour
         float _sideMove = Input.GetAxis("Horizontal");
         Vector3 sideMove = new Vector3(_sideMove, 0f, 0f);
         rb.AddForce(sideMove * sideMoveSpeed);
+    }
+
+    // unitys update function
+    void Update()
+    {
+        if (rb.velocity.x > trackingSpeed.x || rb.velocity.y > trackingSpeed.y || rb.velocity.z > trackingSpeed.z)
+        {
+            Debug.Log("Tracking");
+            // TODO : when player moves play faster music
+        }
+        if (rb.velocity.x <= trackingSpeed.x || rb.velocity.y <= trackingSpeed.y || rb.velocity.z <= trackingSpeed.z)
+        {
+            // TODO : when player stops moving play slow music
+        }
     }
 }

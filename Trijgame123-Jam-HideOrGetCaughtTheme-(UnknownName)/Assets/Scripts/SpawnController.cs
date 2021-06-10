@@ -10,7 +10,7 @@ public class SpawnController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             nextLvlButton.SetActive(true);
-            Time.timeScale = 0.1f;
+            Time.timeScale = 0.2f;
         }
     }
 }
