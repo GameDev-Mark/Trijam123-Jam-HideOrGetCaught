@@ -3,7 +3,8 @@
 public class SpawnController : MonoBehaviour
 {
     public GameObject nextLvlButton;
-
+    public AudioSource winGameSFX;
+ 
     // ontriggerenter
     void OnTriggerEnter(Collider other)
     {

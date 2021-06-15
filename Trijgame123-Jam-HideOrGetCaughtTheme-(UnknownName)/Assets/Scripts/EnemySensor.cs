@@ -61,7 +61,6 @@ public class EnemySensor : MonoBehaviour
         {
             GetComponent<BoxCollider>().enabled = !enabled;
             _canSeeWalls = true;
-            Debug.Log("WALLS UP");
         }
     }
 }
